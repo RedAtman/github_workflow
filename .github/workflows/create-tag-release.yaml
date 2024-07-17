@@ -45,7 +45,6 @@ jobs:
     #       token: ${{secrets.WORKFLOW_TOKEN}}
     #       generate_release_notes: true
 
-
     outputs:
       # current_version: ${{ steps.generate-version.outputs.CURRENT_VERSION }}
       new_version: ${{ steps.generate-version.outputs.version }}
