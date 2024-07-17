@@ -79,7 +79,7 @@ jobs:
 
       - name: Create Release
         id: create-release
-        uses: undergroundwires/bump-everywhere@main
+        uses: undergroundwires/bump-everywhere@1.4.0
         with:
           git-token: ${{ secrets.WORKFLOW_TOKEN }}
           release-token: ${{ secrets.WORKFLOW_TOKEN }}
