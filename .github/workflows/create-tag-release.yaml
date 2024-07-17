@@ -1,0 +1,40 @@
+name: Create Tag and Release on push
+
+on:
+  push:
+    branches:
+      - main
+      - release/*
+
+jobs:
+  create-release:
+    if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Auto Generate Next Release Tag
+        id: generate_release_tag
+        # You may pin to the exact commit or the version.
+        # uses: amitsingh-007/next-release-tag@d3025f8b2148fb519af1bcf81b1571d7c6db09df
+        uses: amitsingh-007/next-release-tag@main
+        with:
+          # Github secrets token
+          github_token: ${{ secrets.ACTION_TOKEN }}
+          # Prefix added to the generated release tag
+          tag_prefix: "v"
+          # Template format based in which release tag is generated
+          # tag_template: "v${{ steps.calc_new_version.outputs.new_version }}"
+          tag_template: 'yyyy.mm.dd.i'
+          # Explicitly set the previous release tag
+          previous_tag: # optional
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
+          tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
+          token: ${{secrets.ACTION_TOKEN}}
+          generate_release_notes: true
