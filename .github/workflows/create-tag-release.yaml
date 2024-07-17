@@ -8,35 +8,78 @@ on:
     branches:
       - main
 
+# env:
+#   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+
 jobs:
-  create-release:
+  CreateGitHubRelease:
     if: github.event.pull_request.merged == true && github.event.pull_request.base.ref == 'main'
+    # if: "contains(toJSON(github.event.commits.*.message), 'build: [release]')"
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v4
 
-      - name: Auto Generate Next Release Tag
-        id: generate_release_tag
-        # You may pin to the exact commit or the version.
-        # uses: amitsingh-007/next-release-tag@d3025f8b2148fb519af1bcf81b1571d7c6db09df
-        uses: amitsingh-007/next-release-tag@main
+    #   - name: Auto Generate Next Release Tag
+    #     id: generate_release_tag
+    #     # You may pin to the exact commit or the version.
+    #     # uses: amitsingh-007/next-release-tag@d3025f8b2148fb519af1bcf81b1571d7c6db09df
+    #     uses: amitsingh-007/next-release-tag@main
+    #     with:
+    #       # Github secrets token
+    #       github_token: ${{ secrets.WORKFLOW_TOKEN }}
+    #       # Prefix added to the generated release tag
+    #       tag_prefix: "v"
+    #       # Template format based in which release tag is generated
+    #       # tag_template: "v${{ steps.calc_new_version.outputs.new_version }}"
+    #       tag_template: 'yyyy.mm.dd.i'
+    #       # Explicitly set the previous release tag
+    #       previous_tag: # optional
+
+    #   - name: Create Release
+    #     uses: softprops/action-gh-release@v2
+    #     with:
+    #       name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
+    #       tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
+    #       token: ${{secrets.WORKFLOW_TOKEN}}
+    #       generate_release_notes: true
+
+
+    outputs:
+      # current_version: ${{ steps.generate-version.outputs.CURRENT_VERSION }}
+      new_version: ${{ steps.generate-version.outputs.version }}
+      status: ${{ steps.create-release.outcome }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          # Github secrets token
-          github_token: ${{ secrets.WORKFLOW_TOKEN }}
-          # Prefix added to the generated release tag
-          tag_prefix: "v"
-          # Template format based in which release tag is generated
-          # tag_template: "v${{ steps.calc_new_version.outputs.new_version }}"
-          tag_template: 'yyyy.mm.dd.i'
-          # Explicitly set the previous release tag
-          previous_tag: # optional
+          token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+
+      # - name: Generate version
+      #   id: generate-version
+      #   uses: HardNorth/github-version-generate@main
+      #   with:
+      #     version-source: file
+      #     version-file: ${{ github.workspace }}/../current-version
+      #     version-file-extraction-pattern: '[0-9.]+'
+      #     # version-file-regex: '^(?P<version>[0-9.]+)$'
+
+      - uses: paulhatch/semantic-version@v5.3.0
+        id: generate-version
+        with:
+          major_pattern: "(MAJOR)"
+          minor_pattern: "(MINOR)"
+          version_format: "v${major}.${minor}.${patch}"
 
       - name: Create Release
-        uses: softprops/action-gh-release@v2
+        id: create-release
+        uses: undergroundwires/bump-everywhere@main
         with:
-          name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
-          tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
-          token: ${{secrets.WORKFLOW_TOKEN}}
-          generate_release_notes: true
+          git-token: ${{ secrets.WORKFLOW_TOKEN }}
+          release-token: ${{ secrets.WORKFLOW_TOKEN }}
