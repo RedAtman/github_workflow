@@ -24,7 +24,7 @@ jobs:
         uses: amitsingh-007/next-release-tag@main
         with:
           # Github secrets token
-          github_token: ${{ secrets.ACTION_TOKEN }}
+          github_token: ${{ secrets.WORKFLOW_TOKEN }}
           # Prefix added to the generated release tag
           tag_prefix: "v"
           # Template format based in which release tag is generated
@@ -38,5 +38,5 @@ jobs:
         with:
           name: Release ${{ steps.generate_release_tag.outputs.next_release_tag }}
           tag_name: ${{ steps.generate_release_tag.outputs.next_release_tag }}
-          token: ${{secrets.ACTION_TOKEN}}
+          token: ${{secrets.WORKFLOW_TOKEN}}
           generate_release_notes: true
