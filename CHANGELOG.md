@@ -1,5 +1,11 @@
 # Changelog
 
+## 2025.0.4 (2024-07-17)
+
+* ⬆️ bump to {{major.minor.patch}} | [10b2e72](https://github.com/RedAtman/github_workflow/commit/10b2e72690320d2f5c6dfdde83c1b8260b0515c2)
+
+[compare](https://github.com/RedAtman/github_workflow/compare/2025.0.3...2025.0.4)
+
 ## 2025.0.3 (2024-07-17)
 
 [compare](https://github.com/RedAtman/github_workflow/compare/2025.0.2...2025.0.3)
