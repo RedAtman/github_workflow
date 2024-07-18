@@ -27,8 +27,8 @@ repos:
     rev: 24.4.2
     hooks:
       - id: black
-        args: [--config=pyproject.toml]
-        # args: [--skip-string-normalization]
+        # args: [--config=pyproject.toml]
+        args: [--skip-string-normalization]
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2
@@ -36,8 +36,8 @@ repos:
       - id: isort
         name: isort (python)
         files: "."
-        args: [--settings-path=pyproject.toml]
-        # args: [--profile, black, --filter-files]
+        # args: [--settings-path=pyproject.toml]
+        args: [--profile, black, --filter-files]
 
   # - repo: https://github.com/pre-commit/pygrep-hooks
   #   rev: v1.9.0
