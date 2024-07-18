@@ -1,23 +1,23 @@
 name: Pre Commit
-# pip install pre-commit
 
 on:
   push:
     # branches:
     #   - main
-  pull_request:
-    # branches:
-    #   - main
+  # pull_request:
+  #   branches:
+  #     - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  pre-commit:
+    if: github.event_name == 'push'
 
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
+        # All available versions: https://raw.githubusercontent.com/actions/python-versions/main/versions-manifest.json
         python-version: 3.11.9
 
     - name: Install dependencies
