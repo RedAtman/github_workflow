@@ -63,3 +63,24 @@ repos:
   #   hooks:
   #     - id: trufflehog
   #       args: ["--regex", "--entropy=False"]
+
+  # - repo: local
+  #   hooks:
+  #     - id: tests
+  #       name: run tests
+  #       entry: venv/bin/pytest -v -m fast
+  #       language: python
+  #       additional_dependencies: [pre-commit, pytest]
+  #       always_run: true
+  #       pass_filenames: false
+  #       types: [python]
+  #       stages: [commit]
+
+  # - repo: local
+  #   hooks:
+  #     - id: tests
+  #       name: run tests
+  #       entry: venv/bin/pytest -x
+  #       language: system
+  #       types: [python]
+  #       stages: [push]
