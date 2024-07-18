@@ -31,8 +31,7 @@ repos:
         # args: [--skip-string-normalization]
 
   - repo: https://github.com/PyCQA/isort
-    # rev: 5.13.2
-    rev: latest
+    rev: 5.13.2
     hooks:
       - id: isort
         name: isort (python)
